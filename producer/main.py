@@ -12,6 +12,6 @@ access_token_secret = os.getenv("ACCESS_TOKEN_SECRET")
 
 producer = Producer()
 
-producer.start_main_loop("coronavirus")
+producer.start_producer_loop("coronavirus")
 
 

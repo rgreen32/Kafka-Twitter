@@ -19,5 +19,4 @@ class Streamer():
             if line: # filter out keep-alive new lines
                 response = json.loads(line)
                 if "text" in response:
-                    print(json.loads(line)["text"])
                     yield json.loads(line)["text"]

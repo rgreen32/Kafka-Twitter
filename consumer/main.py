@@ -1,3 +1,5 @@
 from app.core import Consumer
 
-Consumer()
+consumer = Consumer()
+
+consumer.start_consumer_loop()
