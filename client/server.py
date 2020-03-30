@@ -1,12 +1,18 @@
 from pymongo import MongoClient
-from bson.json_util import dumps
+from app.data import DbHandler
 
-client = MongoClient("localhost:27017")
 
-# print(client.changestream.collections.insert_one({"hello": "world"}).inserted_id)
+handler = DbHandler()
+collection = handler.collection
+change_stream = collection.watch()
 
-change_stream = client.changestream.collections.watch()
+while(True):
+    try:
+        for change in change_stream:
 
-# for change in change_stream:
-#     print(dumps(change))
-#     print('') # for readability only
+            twittertopic = handler.topics.get(change["documentKey"]["_id"])
+            emojicount = {"twittertopic": twittertopic, "emoji": list(change["updateDescription"]["updatedFields"].keys())[0], "count": list(change["updateDescription"]["updatedFields"].values())[0]}
+            print(emojicount)
+            # emojicount
+    except Exception as e:
+        print(e)

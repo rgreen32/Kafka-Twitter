@@ -13,10 +13,14 @@ class Streamer():
     #     self.conn = self.session.post(self.url, data={'track': topic}, auth=self.auth, stream=True)
         
     def get_stream(self, topic):
-        conn = self.session.post(self.url, data={'track': topic}, auth=self.auth, stream=True)
-        print(conn.status_code)
-        for line in conn.iter_lines():
-            if line: # filter out keep-alive new lines
-                response = json.loads(line)
-                if "text" in response:
-                    yield json.loads(line)["text"]
+        while(True):
+            self.conn = self.session.post(self.url, data={'track': topic}, auth=self.auth, stream=True)
+            print(self.conn.status_code)
+            try:
+                for line in self.conn.iter_lines():
+                    if line: # filter out keep-alive new lines
+                        response = json.loads(line)
+                        if "text" in response:
+                            yield json.loads(line)["text"]
+            except Exception as e:
+                print(e)
